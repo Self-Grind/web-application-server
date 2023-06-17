@@ -35,7 +35,7 @@ public class RequestHandler extends Thread {
             byte[] body = fileToByte(url);
 
             if(url.contains("css") && !url.contains("map")){
-                setCssAndResponse(dos, body.length);
+                setCssAndResponseHeader(dos, body.length);
                 setResponseBody(dos, body);
             }
             if(url.contains("html")){
@@ -82,6 +82,11 @@ public class RequestHandler extends Thread {
         }
     }
 
+    private void responseHeader(DataOutputStream dos, int lengthOfBodyContent) throws IOException{
+
+
+    }
+
     private void responseBody(DataOutputStream dos, byte[] body) {
         try {
             dos.write(body, 0, body.length);
@@ -95,7 +100,7 @@ public class RequestHandler extends Thread {
         return Files.readAllBytes(new File("./webapp" + url).toPath());
     }
 
-    private void setCssAndResponse(DataOutputStream dos, int lengthOfBodyContent) throws IOException{
+    private void setCssAndResponseHeader(DataOutputStream dos, int lengthOfBodyContent) throws IOException{
         dos.writeBytes("HTTP/1.1 200 OK \r\n");
         dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n");
         dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");

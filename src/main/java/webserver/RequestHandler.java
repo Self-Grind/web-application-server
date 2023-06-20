@@ -39,6 +39,7 @@ public class RequestHandler extends Thread {
             int contentLength = 0;
 
 
+
             if (isNull(line)) {
                 return;
             }
@@ -54,6 +55,7 @@ public class RequestHandler extends Thread {
                 if(line.contains("Content-Length")){
                     contentLength = getContentLength(line);
                 }
+
             }
 
             url = token[1];
@@ -118,6 +120,11 @@ public class RequestHandler extends Thread {
         }
     }
 
+    private void responseHeader(DataOutputStream dos, int lengthOfBodyContent) throws IOException{
+
+
+    }
+
     private void responseBody(DataOutputStream dos, byte[] body) {
         try {
             dos.write(body, 0, body.length);
@@ -131,7 +138,7 @@ public class RequestHandler extends Thread {
         return Files.readAllBytes(new File("./webapp" + url).toPath());
     }
 
-    private void setCssAndResponse(DataOutputStream dos, int lengthOfBodyContent) throws IOException{
+    private void setCssAndResponseHeader(DataOutputStream dos, int lengthOfBodyContent) throws IOException{
         dos.writeBytes("HTTP/1.1 200 OK \r\n");
         dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n");
         dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");

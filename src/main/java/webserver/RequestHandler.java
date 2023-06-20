@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.HttpRequestUtils;
+import util.IOUtils;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
@@ -30,23 +33,55 @@ public class RequestHandler extends Thread {
             // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
 
             // InputStream을 한 줄 단위로 읽기 위해 BufferedReader 생성
-            DataOutputStream dos = new DataOutputStream(out);
-            String url = readBuffer(in);
-            byte[] body = fileToByte(url);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String line = br.readLine();
+            String url = "";
+            int contentLength = 0;
 
-            if(url.contains("css") && !url.contains("map")){
-                setCssAndResponse(dos, body.length);
-                setResponseBody(dos, body);
+
+            if (isNull(line)) {
+                return;
             }
-            if(url.contains("html")){
+            String[] token = line.split(" ");
+
+            log.debug("request line :{}", line);
+
+
+
+            while (!"".equals(line)) {
+                line = br.readLine();
+                log.debug("header: {}",line);
+                if(line.contains("Content-Length")){
+                    contentLength = getContentLength(line);
+                }
+            }
+
+            url = token[1];
+
+            if("/user/create".equals(url)){
+                int index = url.indexOf("?");
+                String queryStrings = url.substring(index + 1);
+                Map<String, String> params =
+                        HttpRequestUtils.parseQueryString(queryStrings);
+                User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
+                log.debug("User :{}", user);
+
+            }else{
+                DataOutputStream dos = new DataOutputStream(out);
+                byte[] body = Files.readAllBytes(new File("./webapp" + token[1]).toPath());
                 response200Header(dos, body.length);
-                setResponseBody(dos, body);
+                responseBody(dos, body);
             }
 
 
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    private int getContentLength(String line) {
+        String[] headerTokens = line.split(":");
+        return Integer.parseInt(headerTokens[1].trim());
     }
 
     public String readBuffer(InputStream in) throws IOException {

@@ -53,15 +53,16 @@ public class RequestHandler extends Thread {
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String line = br.readLine();
         String url = "";
+        if (isNull(line)) {
+            return "";
+        }
+        String[] token = line.split(" ");
+        if(token[0].equals("GET")){
+            url = token[1];
+        }
+
         while (!"".equals(line)) {
-            if (isNull(line)) {
-                return "";
-            }
-            String[] token = line.split(" ");
-            if(token[0].equals("GET")){
-                url = token[1];
-            }
-            System.out.println(line);
+            log.debug("header: {}",line);
             line = br.readLine();
         }
         return url;

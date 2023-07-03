@@ -39,7 +39,6 @@ public class RequestHandler extends Thread {
             int contentLength = 0;
 
 
-
             if (isNull(line)) {
                 return;
             }

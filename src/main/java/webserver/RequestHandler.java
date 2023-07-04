@@ -33,6 +33,7 @@ public class RequestHandler extends Thread {
             String line = br.readLine();
             log.debug("request line : {}", line);
 
+
             if (line == null) {
                 return;
             }
@@ -113,6 +114,7 @@ public class RequestHandler extends Thread {
             log.error(e.getMessage());
         }
     }
+
 
     private void reseponse200CssHeader(DataOutputStream dos, int lengthOfBodyContent) {
         try {

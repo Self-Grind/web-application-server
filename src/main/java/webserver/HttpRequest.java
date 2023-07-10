@@ -29,21 +29,45 @@ public class HttpRequest {
 
         String[] tokens = line.split(" ");
         this.method = tokens[0];
-        this.path = tokens[1].substring(0, tokens[1].indexOf("?"));
-        this.params = HttpRequestUtils.parseQueryString(tokens[1].substring(tokens[1].indexOf("?")+1));
-        Map<String, String> tmp = new HashMap<>();
+        if(this.method.equals("GET")) {
+            this.path = tokens[1].substring(0, tokens[1].indexOf("?"));
+            this.params = HttpRequestUtils.parseQueryString(tokens[1].substring(tokens[1].indexOf("?") + 1));
+            Map<String, String> tmp = new HashMap<>();
 
-        while (!line.equals("")) {
-            line = br.readLine();
-            if(line == null)
-                break;
-            String[] val = line.split(": ");
-            tmp.put(val[0], val[1]);
+            while (!line.equals("")) {
+                line = br.readLine();
+                if(line == null)
+                    break;
+                String[] val = line.split(": ");
+                tmp.put(val[0], val[1]);
 
-            log.debug("header : {}", line);
+                log.debug("header : {}", line);
+            }
+
+            this.header = tmp;
+
+        }else if(this.method.equals("POST")){
+            this.path = tokens[1];
+            Map<String, String> tmp = new HashMap<>();
+
+            while(!line.equals("")){
+                line = br.readLine();
+                if(line == null){
+                    break;
+                }
+                if(line.contains(":")) {
+                    String[] keyVal = line.split(": ");
+                    tmp.put(keyVal[0], keyVal[1]);
+                }else{
+                    this.params = HttpRequestUtils.parseQueryString(line);
+                }
+
+                log.debug("header :{}", line);
+            }
+            this.header = tmp;
+
         }
 
-        this.header = tmp;
 
     }
 

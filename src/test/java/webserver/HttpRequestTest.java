@@ -2,10 +2,8 @@ package webserver;
 
 import org.junit.Test;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
-
 import static junit.framework.TestCase.assertEquals;
 
 public class HttpRequestTest {
@@ -34,4 +32,6 @@ public class HttpRequestTest {
         assertEquals("keep-alive", request.getHeader("Connection"));
         assertEquals("javajigi", request.getParameter("userId"));
     }
+
+
 }

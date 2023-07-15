@@ -143,7 +143,6 @@ public class RequestHandler extends Thread {
         byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
         response200Header(dos, body.length);
         responseBody(dos, body);
-
     }
 
     private void response302LoginSuccessHeader(DataOutputStream dos) {

@@ -1,4 +1,4 @@
-package webserver;
+package webserver.v2;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +36,13 @@ public class HttpResponse {
         }
     }
 
-    public void sendRedirect(String s) {
+    public void sendRedirect(String url) throws IOException {
+        byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
+        response300Header(dos, url);
     }
 
-    public void addHeader(String s, String s1) {
+    public void addHeader(String key, String value) throws IOException {
+        dos.writeBytes(key + ": " +value + " \r\n");
     }
 
     private int getContentLength(String line) {
@@ -63,6 +66,15 @@ public class HttpResponse {
             dos.writeBytes("HTTP/l.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/css\r\n");
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+    private void response300Header(DataOutputStream dos, String url) {
+        try {
+            dos.writeBytes("HTTP/1.1 302 REDIRECT \r\n");
+            dos.writeBytes("Location: " + url + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());

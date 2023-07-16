@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import db.DataBase;
 import model.User;
@@ -13,13 +12,13 @@ import org.slf4j.LoggerFactory;
 import util.HttpRequestUtils;
 import util.IOUtils;
 
-public class RequestHandler extends Thread {
-    private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
+public class RequestHandlerV1 extends Thread {
+    private static final Logger log = LoggerFactory.getLogger(RequestHandlerV1.class);
 
 
     private Socket connection;
 
-    public RequestHandler(Socket connectionSocket) throws IOException {
+    public RequestHandlerV1(Socket connectionSocket) throws IOException {
         this.connection = connectionSocket;
     }
 
@@ -182,11 +181,6 @@ public class RequestHandler extends Thread {
         } catch (IOException e) {
             log.error(e.getMessage());
         }
-    }
-
-    private void responseHeader(DataOutputStream dos, int lengthOfBodyContent) throws IOException {
-
-
     }
 
     private void responseBody(DataOutputStream dos, byte[] body) {

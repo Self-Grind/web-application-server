@@ -3,24 +3,25 @@ package webserver.v2.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.HttpRequestUtils;
+import webserver.v2.HttpMethod;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RequestLine {
+    private HttpMethod method;
 
     private static final Logger log = LoggerFactory.getLogger(RequestLine.class);
 
-    private String method;
     private String path;
     private Map<String, String> params = new HashMap<>();
 
     public RequestLine(String requestline) {
         log.debug("request line : {}", requestline);
         String[] tokens = requestline.split(" ");
-        method = tokens[0];
+        method = HttpMethod.valueOf(tokens[0]);
 
-        if ("POST".equals(method)) {
+        if(method == HttpMethod.POST){
             path = tokens[1];
             return;
         }
@@ -36,8 +37,8 @@ public class RequestLine {
 
     }
 
-    public String getMethod() {
-        return this.method;
+    public HttpMethod getMethod() {
+        return method;
     }
 
     public String getPath() {

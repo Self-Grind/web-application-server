@@ -1,12 +1,12 @@
 package webserver.v2.controller;
 
+import webserver.v2.HttpMethod;
 import webserver.v2.HttpRequest;
 import webserver.v2.HttpResponse;
 
 import java.io.IOException;
 
 public class AbstractController implements Controller{
-
 
 
     /**
@@ -16,17 +16,17 @@ public class AbstractController implements Controller{
      */
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
-        String method = request.getMethod();
+        HttpMethod method = request.getRequestLine().getMethod();
 
-        if(method.equals("GET")){
+        if(method.equals(HttpMethod.GET)){
             this.doGet(request, response);
-        } else if (method.equals("POST")) {
+        } else if (method.equals(HttpMethod.POST)) {
             this.doPost(request, response);
         }
     }
 
     public void doGet(HttpRequest request, HttpResponse response) throws IOException {
-        response.forward(request.getPath());
+        response.forward(request.getRequestLine().getPath());
     }
 
     public void doPost(HttpRequest request, HttpResponse response){

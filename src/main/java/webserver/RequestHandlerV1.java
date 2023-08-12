@@ -114,6 +114,16 @@ public class RequestHandlerV1 extends Thread {
         }
     }
 
+    private boolean isLogin(String line) {
+        String[] headerTokens = line.split(":");
+        Map<String, String> cookies = HttpRequestUtils.parseCookies(headerTokens[1].trim());
+        String val = cookies.get("logined");
+        if (val == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(val);
+
+    }
 
     private void reseponse200CssHeader(DataOutputStream dos, int lengthOfBodyContent) {
         try {
@@ -126,16 +136,6 @@ public class RequestHandlerV1 extends Thread {
         }
     }
 
-    private boolean isLogin(String line) {
-        String[] headerTokens = line.split(":");
-        Map<String, String> cookies = HttpRequestUtils.parseCookies(headerTokens[1].trim());
-        String val = cookies.get("logined");
-        if (val == null) {
-            return false;
-        }
-        return Boolean.parseBoolean(val);
-
-    }
 
     private void responseResource(OutputStream out, String url) throws IOException {
         DataOutputStream dos = new DataOutputStream(out);

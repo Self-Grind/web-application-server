@@ -5,6 +5,7 @@ import java.net.Socket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webserver.v2.RequestHandlerV2;
 
 public class WebServer {
     private static final Logger log = LoggerFactory.getLogger(WebServer.class);
@@ -26,8 +27,10 @@ public class WebServer {
             // 클라이언트가 연결될때까지 대기한다.
             Socket connection;
             while ((connection = listenSocket.accept()) != null) {
-                RequestHandlerV1 requestHandlerV1 = new RequestHandlerV1(connection);
-                requestHandlerV1.start();
+                RequestHandlerV2 requestHandlerV2 = new RequestHandlerV2(connection);
+//                RequestHandlerV1 requestHandlerV1 = new RequestHandlerV1(connection);
+//                requestHandlerV1.start();
+                requestHandlerV2.start();
             }
         }
     }

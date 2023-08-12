@@ -46,11 +46,6 @@ public class HttpRequest {
 
     }
 
-//    public RequestLine getRequestLine(){
-//        if(method == HttpMethod.POST)
-//        return this.requestLine;
-//    }
-
     public String getHeaders(String key){
         return this.headers.get("key");
     }
@@ -58,5 +53,17 @@ public class HttpRequest {
 
     public RequestLine getRequestLine() {
         return requestLine;
+    }
+
+    public String getPath() {
+        return requestLine.getPath();
+    }
+
+    public HttpMethod getMethod(){
+        return requestLine.getMethod();
+    }
+
+    public String getParameter(String key) {
+        return params.get(key);
     }
 }

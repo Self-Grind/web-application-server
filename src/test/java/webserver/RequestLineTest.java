@@ -7,6 +7,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class RequestLineTest {
 
+    //p.164
     @Test
     public void create_method(){
         RequestLine line = new RequestLine("GET /index.html HTTP/1.1");

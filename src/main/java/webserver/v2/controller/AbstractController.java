@@ -7,8 +7,6 @@ import webserver.v2.HttpResponse;
 import java.io.IOException;
 
 public class AbstractController implements Controller{
-
-
     /**
      *
      * @param request
@@ -25,11 +23,11 @@ public class AbstractController implements Controller{
         }
     }
 
-    public void doGet(HttpRequest request, HttpResponse response) throws IOException {
-        response.forward(request.getRequestLine().getPath());
+    protected void doGet(HttpRequest request, HttpResponse response) throws IOException {
+
     }
 
-    public void doPost(HttpRequest request, HttpResponse response){
+    protected void doPost(HttpRequest request, HttpResponse response) throws IOException {
 
     }
 }
